@@ -32,11 +32,11 @@ if (flutterVersionName == null) {
 android {
     signingConfigs {
         release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile keystoreProperties['storeFile'] ?  file("${rootDir}/android/app/${keystoreProperties['storeFile']}") : null
-            storePassword keystoreProperties['storePassword']
-        }
+	   keyAlias keystoreProperties['keyAlias']
+	   keyPassword keystoreProperties['keyPassword']
+	   storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+	   storePassword keystoreProperties['storePassword']
+   }
     }
 
     namespace "com.example.cez_tower"
