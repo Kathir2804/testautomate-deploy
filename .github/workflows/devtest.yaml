@@ -2,7 +2,7 @@ name: DemoApp PlayStore Release
 
 on:
   push:
-    branches: [ test-dev ]
+    branches: [test-dev]
 
 jobs:
   version:
@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Fetch all history for all tags and branches
       run: |
-        git config remote.origin.url https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}
+        git config remote.origin.url https://x-access-token:${{ secrets.TOKEN }}@github.com/${{ github.repository }}
         git fetch --prune --depth=10000
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0.9.3
