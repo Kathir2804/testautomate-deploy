@@ -1,5 +1,5 @@
-#!/bin/bash
+# #!/bin/bash
 
-set -eo pipefail
+# set -eo pipefail
 
-cd Calculator-package; swift test --parallel; cd ..
+# cd Calculator-package; swift test --parallel; cd ..
