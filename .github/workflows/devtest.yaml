@@ -96,9 +96,10 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
           packageName: com.package.name
-          releaseFiles: app-release.aab 
+          releaseFiles: ./app-release.aab 
           track: internal
           whatsNewDirectory: distribution/whatsnew
           inAppUpdatePriority: 0
           status: completed
           changesNotSentForReview: false
+          working-directory: echo ${{ github.workspace }}
