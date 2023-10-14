@@ -90,7 +90,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
           packageName: com.avow.mypagkae
-          # releaseFiles: app-release.aab 
+          releaseFiles: app-release.aab 
           # track: internal
           # whatsNewDirectory: distribution/whatsnew
           # inAppUpdatePriority: 0
