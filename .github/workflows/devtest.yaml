@@ -90,7 +90,7 @@ jobs:
           echo "Contents of the working directory:"
           ls -R
           echo "Contents of the directory where AAB file is expected:"
-          ls -R /github/workspace/build/app/outputs/bundle/release/
+          find /github/workspace/build -type f
       - name: Release app to internal track
         uses: r0adkll/upload-google-play@v1
         with:
