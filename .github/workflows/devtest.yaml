@@ -24,7 +24,7 @@ jobs:
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0.9.7
       - name: Create version.txt with nuGetVersion
-        run: echo "VERSION=${{ steps.gitversion.outputs.nuGetVersion }}" >> $GITHUB_ENV
+        run: echo ${{ steps.gitversion.outputs.nuGetVersion  }} > version.txt
       - name: Upload version.txt
         uses: actions/upload-artifact@v2
         with:
@@ -77,20 +77,28 @@ jobs:
         path: build/app/outputs/bundle/release/app-release.aab
   release:
     name: Release app to internal track
-    needs: [ build ]
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Get appbundle from artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: appbundle
-    - name: Release app to internal track
-      uses: r0adkll/upload-google-play@v1
-      with:
-        serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
-        packageName:  com.package.name
-        releaseFile: app-release.aab
-        track: internal
-        whatsNewDirectory: distribution/whatsnew
-        status: completed
+      - uses: actions/checkout@v1
+      - name: Get appbundle from artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: appbundle
+      - name: Debug Working Directory
+        run: |
+          echo "Contents of the working directory:"
+          ls -R
+          echo "Contents of the directory where AAB file is expected:"
+          ls -R /github/workspace/build/app/outputs/bundle/release/
+      - name: Release app to internal track
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
+          packageName: com.package.name
+          releaseFiles: app-release.aab 
+          track: internal
+          whatsNewDirectory: distribution/whatsnew
+          inAppUpdatePriority: 0
+          status: completed
+          changesNotSentForReview: false
