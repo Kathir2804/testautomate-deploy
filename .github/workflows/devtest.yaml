@@ -59,10 +59,12 @@ jobs:
     - uses: subosito/flutter-action@v1
       with:
         flutter-version: '3.13.0'
+    - name: Copy google-services.json
+      run: cp android/app/google-services.json ./google-services.json
+    - name: Create Firebase JSON file
+      run: echo "${{ secrets.GOOGLE_JSON }}" > ./android/app/google-services.json    
     - run: flutter clean
     - run: flutter pub get
-    - name: Create Firebase JSON file
-      run: echo "${{ secrets.GOOGLE_JSON }}" > ./android/app/google-services.json
     - run: flutter build apk
     - run: flutter build appbundle
     - name: Create a Release in GitHub
