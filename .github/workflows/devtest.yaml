@@ -33,7 +33,7 @@ jobs:
      
   build:
     name: Build APK and Create release
-    needs: [version, prepare]
+    needs: [version]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
