@@ -7,15 +7,12 @@ on:
     branches: [main]  
 
 jobs:
-   prepare:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create Firebase JSON file
-        run: echo "${{ secrets.GOOGLE_JSON }}" > android/app/google-services.json
   version:
     name: Create version number
     runs-on: ubuntu-latest
     steps:
+      - name: Create Firebase JSON file
+        run: echo "${{ secrets.GOOGLE_JSON }}" > android/app/google-services.json
       - uses: actions/checkout@v1
       - name: Fetch all history for all tags and branches
         run: |
