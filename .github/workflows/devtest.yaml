@@ -34,14 +34,12 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - name: Create directories
-        run: mkdir -p android/app
       - name: Create google-services.json file
         run: echo "${{ secrets.GOOGLE_JSON }}" > android/app/google-services.json
 
   build:
     name: Build APK and Create release
-    needs: [version]
+    needs: [version, prepare]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
