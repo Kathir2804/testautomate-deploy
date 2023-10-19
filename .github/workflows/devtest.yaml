@@ -11,8 +11,6 @@ jobs:
     name: Create version number
     runs-on: ubuntu-latest
     steps:
-      - name: Create Firebase JSON file
-        run: echo "${{ secrets.GOOGLE_JSON }}" > android/app/google-services.json
       - uses: actions/checkout@v1
       - name: Fetch all history for all tags and branches
         run: |
@@ -32,6 +30,11 @@ jobs:
         with:
           name: gitversion
           path: version.txt
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create google-services.json file
+        run: echo "${{ secrets.GOOGLE_JSON }}" > android/app/google-services.json  
   build:
     name: Build APK and Create release
     needs: [ version ]
@@ -77,6 +80,12 @@ jobs:
       with:
         name: appbundle
         path: build/app/outputs/bundle/release/app-release.aab
+    cleanup:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Clean up google-services.json
+        run: rm android/app/google-services.json
   # release:
   #   name: Release app to internal track
   #   needs: [build]
