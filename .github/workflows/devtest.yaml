@@ -61,7 +61,7 @@ jobs:
         with:
           flutter-version: '3.13.0'
       - name: Create google-services.json file
-        run: echo "${{ secrets.GOOGLE_JSON }}" > android/app/google-services.json
+        run: echo "${{ secrets.GOOGLE_JSON }}" > /home/runner/work/testautomate-deploy/testautomate-deploy/android/app/google-services.json
       - run: flutter clean
       - run: flutter pub get
       - run: flutter build apk
