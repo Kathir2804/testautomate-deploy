@@ -7,6 +7,14 @@ on:
     branches: [main]
 
 jobs:
+  comment-trigger:
+    name: Trigger Workflow on Comment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Comment Content
+        id: check-comment
+        run: echo "::set-output name=trigger::${{ contains(github.event.comment.body, 'build release') }}"
+  if: ${{ needs.comment-trigger.outputs.trigger == 'true' }}      
   version:
     name: Create version number
     runs-on: ubuntu-latest
@@ -79,12 +87,12 @@ jobs:
           name: appbundle
           path: build/app/outputs/bundle/release/app-release.aab
 
-  cleanup:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - name: Clean up google-services.json
-        run: rm android/app/google-services.json
+  # cleanup:
+  #   runs-on: ubuntu-latest
+  #   needs: [build]
+  #   steps:
+  #     - name: Clean up google-services.json
+  #       run: rm android/app/google-services.json
 
   # The release job is currently commented out as in your original workflow
   # release:
