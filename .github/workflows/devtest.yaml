@@ -11,7 +11,7 @@ on:
       workflow-id:
         description: 'Select the workflow to run'
         required: true
-        default: 'devtest.yaml'
+        default: 'devtest'
 
 jobs:
   comment-trigger:
