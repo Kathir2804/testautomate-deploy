@@ -6,6 +6,13 @@ on:
   pull_request:
     branches: [main]
 
+  workflow_dispatch:
+    inputs:
+      workflow-id:
+        description: 'Select the workflow to run'
+        required: true
+        default: 'devtest.yaml'
+
 jobs:
   comment-trigger:
     name: Trigger Workflow on Comment
