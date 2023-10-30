@@ -96,34 +96,33 @@ jobs:
         with:
           name: appbundle
           path: build/app/outputs/bundle/release/app-release.aab
+  release:
+    name: Release app to internal track
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
 
-  # cleanup:
-  #   runs-on: ubuntu-latest
-  #   needs: [build]
-  #   steps:
-  #     - name: Clean up google-services.json
-  #       run: rm android/app/google-services.json
+      - name: Get appbundle from artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: appbundle
 
-  # The release job is currently commented out as in your original workflow
-  # release:
-  #   name: Release app to internal track
-  #   needs: [build]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v1
-  #     - name: Get appbundle from artifacts
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: appbundle
-  #     - name: Release app to internal track
-  #       uses: r0adkll/upload-google-play@v1
-  #       with:
-  #         serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
-  #         packageName: com.avow.mypagkae
-  #         releaseFiles: app-release.aab 
-  #         track: internal
-  #         whatsNewDirectory: distribution/whatsnew
-  #         inAppUpdatePriority: 0
-  #         status: completed
-  #         changesNotSentForReview: false
-  #         working-directory: echo ${{ github.workspace }}
+      - name: Check if build is for Android TV
+        id: check-android-tv
+        run: echo "Check if the build is for Android TV" 
+
+      - name: Release app to internal track for Android TV
+        if: steps.check-android-tv.outputs.check-android-tv == 'true'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
+          packageName: com.avow.cez_tower
+          releaseFiles: app-release.aab
+          track: internal
+          whatsNewDirectory: distribution/whatsnew
+          inAppUpdatePriority: 0
+          status: completed
+          changesNotSentForReview: false
+          working-directory: ${{ github.workspace }}
+
