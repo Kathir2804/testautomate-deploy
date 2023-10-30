@@ -70,6 +70,8 @@ jobs:
         run: sed -i 's/#{STORE_PASSWORD}#/${{ secrets.STORE_PASSWORD }}/g' android/key.properties
       - name: Update KeyStore key password in gradle properties
         run: sed -i 's/#{KEY_PASSWORD}#/${{ secrets.KEY_PASSWORD }}/g' android/key.properties
+      - name: Update KeyStore key password in gradle properties
+        run: sed -i 's/#{KEY_PASSWORD}#/${{ secrets.KEY_PASSWORD }}/g' android/key.properties
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
