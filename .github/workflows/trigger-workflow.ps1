@@ -2,7 +2,7 @@
 $GitHubUsername = "Kathir2804"
 $GitHubRepo = "testautomate-deploy"
 $WorkflowID = "devtest.yaml"
-$PAT = "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"
+$PAT = "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"
 
 # GitHub API endpoint for triggering a workflow dispatch
 $ApiEndpoint = "https://api.github.com/repos/$GitHubUsername/$GitHubRepo/actions/workflows/$WorkflowID/dispatches"
@@ -18,5 +18,4 @@ $Headers = @{
     Authorization = "token $PAT"
     Accept = "application/vnd.github.v3+json"
 }
-Invoke-RestMethod -Uri "https://api.github.com/user/repos" -Headers $Headers
 Invoke-RestMethod -Uri $ApiEndpoint -Method POST -Headers $Headers -ContentType "application/json" -Body ($JsonPayload | ConvertTo-Json)
