@@ -70,16 +70,16 @@ jobs:
         run: sed -i 's/#{STORE_PASSWORD}#/${{ secrets.STORE_PASSWORD }}/g' android/key.properties
       - name: Update KeyStore key password in gradle properties
         run: sed -i 's/#{KEY_PASSWORD}#/${{ secrets.KEY_PASSWORD }}/g' android/key.properties
-      - name: Update KeyStore key password in gradle properties
-        run: sed -i 's/#{KEY_PASSWORD}#/${{ secrets.KEY_PASSWORD }}/g' android/key.properties
+      - name: Update Firebase API Key in your Flutter app
+        run: sed -i "s/#FIREBASE_API_KEY#/${{ secrets.FIREBASE_API_KEY }}/g" android/app/google-services.json
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '3.13.0'
-      - name: Create google-services.json file
-        run: echo "${{ secrets.GOOGLE_JSON }}" > ./android/app/google-services.json
+      # - name: Create google-services.json file
+      #   run: echo "${{ secrets.GOOGLE_JSON }}" > ./android/app/google-services.json
       - run: flutter clean
       - run: flutter pub get
       - run: flutter build apk
