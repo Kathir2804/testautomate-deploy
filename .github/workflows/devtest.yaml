@@ -108,12 +108,12 @@ jobs:
         with:
           name: appbundle
 
-      - name: Check if build is for Android TV
-        id: check-android-tv
-        run: echo Check if the build is for Android TV ${{ steps.check-android-tv.outputs.check-android-tv }}
+      # - name: Check if build is for Android TV
+      #   id: check-android-tv
+      #   run: echo Check if the build is for Android TV ${{ steps.check-android-tv.outputs.check-android-tv }}
 
       - name: Release app to internal track for Android TV
-        if: steps.check-android-tv.outputs.check-android-tv == 'true'
+        # if: steps.check-android-tv.outputs.check-android-tv == 'true'
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
