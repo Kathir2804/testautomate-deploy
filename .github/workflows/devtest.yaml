@@ -59,10 +59,16 @@ jobs:
           name: gitversion
       - name: Create new file without newline char from version.txt
         run: tr -d '\n' < version.txt > version1.txt
-      - name: Authenticate with Google Cloud
+      name: Authenticate with Google Cloud
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
-        run: gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+          GCP_APPLICATION_CREDENTIALS: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
+        run: |
+          echo "$GCP_APPLICATION_CREDENTIALS" > gcp-key.json
+          gcloud auth activate-service-account --key-file=gcp-key.json --project=cez-app
+      # - name: Authenticate with Google Cloud
+      #   env:
+      #     GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
+      #   run: gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
       - name: Download Keystore
         run: gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/upload-keystore.jks
       - name: Read version
