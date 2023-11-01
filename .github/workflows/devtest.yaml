@@ -71,15 +71,11 @@ jobs:
         with:
           path: version1.txt
       - name: Set up GCS credentials
-        run: echo '$SERVICE_ACCOUNT_KEY' > android/app/gcs_key.json
-        env:
-          SERVICE_ACCOUNT_KEY: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
+        run: echo ${{ secrets.PLAYSTORE_ACCOUNT_KEY }} > /tmp/gcs_key.json
       - name: Download Keystore from GCS
         run: |
-          gcloud auth activate-service-account --key-file android/app/gcs_key.json
+          gcloud auth activate-service-account --key-file /tmp/gcs_key.json
           gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/upload-keystore.jks
-        env:
-          SERVICE_ACCOUNT_KEY: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
       - name: Update version in YAML
         run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
       - name: Update KeyStore password in gradle properties
