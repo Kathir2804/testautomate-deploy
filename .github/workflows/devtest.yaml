@@ -59,6 +59,13 @@ jobs:
           name: gitversion
       - name: Create new file without newline char from version.txt
         run: tr -d '\n' < version.txt > version1.txt
+      - name: Download Keystore from GCS
+        run: |
+          echo ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }} > /tmp/gcs_key.json
+          gcloud auth activate-service-account --key-file /tmp/gcs_key.json
+          gsutil cp gs://your-bucket-name/upload-keystore.jks android/app/upload-keystore.jks
+        env:
+          SERVICE_ACCOUNT_KEY: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
       - name: Read version
         id: version
         uses: juliangruber/read-file-action@v1
