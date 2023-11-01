@@ -62,6 +62,8 @@ jobs:
       #   run: gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
       - name: Download Keystore
         run: gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/upload-keystore.jks
+      - name: Download google-services.json
+        run: gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/google-services.json
       - name: Read version
         id: version
         uses: juliangruber/read-file-action@v1
