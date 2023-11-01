@@ -69,9 +69,6 @@ jobs:
         run: echo ${{ secrets.PLAYSTORE_ACCOUNT_KEY }} > /tmp/gcs_key.json
       - name: List Contents of Directory
          run: ls -l /tmp
- 
-
- 
       - name: Check If JSON Key File Exists
         run: |
           if [ -f /tmp/gcs_key.json ]; then
