@@ -59,12 +59,9 @@ jobs:
           name: gitversion
       - name: Create new file without newline char from version.txt
         run: tr -d '\n' < version.txt > version1.txt
-      # - name: Decode Keystore
-      #   id: decode_keystore
-      #   uses: timheuer/base64-to-file@v1
-      #   with:
-      #     fileName: 'android/app/upload-keystore.jks'
-      #     encodedString: ${{ secrets.KEYSTORE }}
+      - name: Decode Keystore
+        id: decode_keystore
+        run: echo -n ${{ secrets.YOUR_KEYSTORE_SECRET }} | base64 -d > android/app/upload-keystore.jks
       - name: Read version
         id: version
         uses: juliangruber/read-file-action@v1
