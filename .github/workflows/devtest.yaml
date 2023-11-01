@@ -13,14 +13,7 @@ on:
         required: true
         default: 'devtest'
 
-jobs:
-  # comment-trigger:
-  #   name: Trigger Workflow on Comment
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Check Comment Content
-  #       id: check-comment
-  #       run: echo "::set-output name=trigger::${{ contains(github.event.comment.body, 'deploy') }}"     
+jobs:     
   version:
     name: Create version number
     runs-on: ubuntu-latest
@@ -47,9 +40,7 @@ jobs:
      
   build:
     name: Build APK and Create release
-    # needs: [version, comment-trigger]
     needs: [version]
-    # if: ${{ needs.comment-trigger.outputs.trigger == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -59,7 +50,7 @@ jobs:
           name: gitversion
       - name: Create new file without newline char from version.txt
         run: tr -d '\n' < version.txt > version1.txt
-      name: Authenticate with Google Cloud
+      - name: Authenticate with Google Cloud
         env:
           GCP_APPLICATION_CREDENTIALS: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
         run: |
@@ -90,8 +81,6 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '3.13.0'
-      # - name: Create google-services.json file
-      #   run: echo "${{ secrets.GOOGLE_JSON }}" > ./android/app/google-services.json
       - run: flutter clean
       - run: flutter pub get
       - run: flutter build apk
