@@ -54,8 +54,9 @@ jobs:
       - name: Download Keystore from GCS
         run: |
           echo ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }} > /tmp/gcs_key.json
-          bash -c 'gcloud auth activate-service-account --key-file /tmp/gcs_key.json'
-          bash -c 'gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/upload-keystore.jks'
+          gcloud auth activate-service-account --key-file /tmp/gcs_key.json
+          gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/upload-keystore.jks
+          echo "Keystore downloaded"
         env:
           SERVICE_ACCOUNT_KEY: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
       - name: Read version
