@@ -14,6 +14,13 @@ on:
         default: 'devtest'
 
 jobs:
+  # comment-trigger:
+  #   name: Trigger Workflow on Comment
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check Comment Content
+  #       id: check-comment
+  #       run: echo "::set-output name=trigger::${{ contains(github.event.comment.body, 'deploy') }}"     
   version:
     name: Create version number
     runs-on: ubuntu-latest
@@ -36,10 +43,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: gitversion
-          path: version.txt    
+          path: version.txt
+     
   build:
     name: Build APK and Create release
+    # needs: [version, comment-trigger]
     needs: [version]
+    # if: ${{ needs.comment-trigger.outputs.trigger == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -49,8 +59,6 @@ jobs:
           name: gitversion
       - name: Create new file without newline char from version.txt
         run: tr -d '\n' < version.txt > version1.txt
-      - name: Checkout code
-        uses: actions/checkout@v2
       - name: Read version
         id: version
         uses: juliangruber/read-file-action@v1
@@ -70,6 +78,8 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: '3.13.0'
+      # - name: Create google-services.json file
+      #   run: echo "${{ secrets.GOOGLE_JSON }}" > ./android/app/google-services.json
       - run: flutter clean
       - run: flutter pub get
       - run: flutter build apk
@@ -92,11 +102,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+
       - name: Get appbundle from artifacts
         uses: actions/download-artifact@v2
         with:
           name: appbundle
+
+      - name: Check if build is for Android TV
+        id: check-android-tv
+        run: echo Check if the build is for Android TV ${{ steps.check-android-tv.outputs.check-android-tv }}
+
       - name: Release app to internal track for Android TV
+        if: steps.check-android-tv.outputs.check-android-tv == 'true'
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
