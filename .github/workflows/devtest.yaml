@@ -71,12 +71,12 @@ jobs:
         with:
           path: version1.txt
       - name: Set up GCS credentials
-        run: echo '$SERVICE_ACCOUNT_KEY' > /tmp/gcs_key.json
+        run: echo '$SERVICE_ACCOUNT_KEY' > android/app/gcs_key.json
         env:
           SERVICE_ACCOUNT_KEY: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
       - name: Download Keystore from GCS
         run: |
-          gcloud auth activate-service-account --key-file /tmp/gcs_key.json
+          gcloud auth activate-service-account --key-file android/app/gcs_key.json
           gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/upload-keystore.jks
         env:
           SERVICE_ACCOUNT_KEY: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
