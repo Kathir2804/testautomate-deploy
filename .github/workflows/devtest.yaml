@@ -44,6 +44,32 @@ jobs:
         with:
           name: gitversion
           path: version.txt
+   
+  download-jks:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Configure Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        version: 356.0.0
+        project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
+        export_default_credentials: true
+
+    - name: Download JKS from GCS
+      run: |
+        gsutil cp gs://cez-mob-gitactions/upload-keystore.jks /tmp/downloaded-keystore.jks
+      env:
+        GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
+
+    - name: Verify Download
+      run: |
+        ls -l /tmp
+        file /tmp/downloaded-keystore.jks
      
   build:
     name: Build APK and Create release
@@ -59,23 +85,8 @@ jobs:
           name: gitversion
       - name: Create new file without newline char from version.txt
         run: tr -d '\n' < version.txt > version1.txt
-      # - name: Decode Keystore
-      #   id: decode_keystore
-      #   uses: timheuer/base64-to-file@v1
-      #   with:
-      #     fileName: 'android/app/upload-keystore.jks'
-      #     encodedString: ${{ secrets.KEYSTORE }}
       - name: Set up GCS credentials
-        run: echo ${{ secrets.PLAYSTORE_ACCOUNT_KEY }} > /tmp/gcs_key.json
-      - name: List Contents of Directory
-         run: ls -l /tmp
-      - name: Check If JSON Key File Exists
-        run: |
-          if [ -f /tmp/gcs_key.json ]; then
-            echo "JSON key file exists."
-          else
-            echo "JSON key file does not exist."
-          fi
+        run: echo ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }} > /tmp/gcs_key.json
       - name: Download Keystore from GCS
         run: |
           gcloud auth activate-service-account --key-file /tmp/gcs_key.json
