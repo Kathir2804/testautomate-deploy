@@ -55,7 +55,7 @@ jobs:
         run: |
           echo ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }} > /tmp/gcs_key.json
           gcloud auth activate-service-account --key-file /tmp/gcs_key.json
-          gsutil cp gs://your-bucket-name/upload-keystore.jks android/app/upload-keystore.jks
+          gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/upload-keystore.jks
         env:
           SERVICE_ACCOUNT_KEY: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
       - name: Read version
