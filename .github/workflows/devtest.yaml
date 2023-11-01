@@ -63,7 +63,7 @@ jobs:
       - name: Download Keystore
         run: gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/upload-keystore.jks
       - name: Download google-services.json
-        run: gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/google-services.json
+        run: gsutil cp gs://cez-mob-gitactions/google-services.json android/app/google-services.json
       - name: Read version
         id: version
         uses: juliangruber/read-file-action@v1
@@ -75,8 +75,8 @@ jobs:
         run: sed -i 's/#{STORE_PASSWORD}#/${{ secrets.STORE_PASSWORD }}/g' android/key.properties
       - name: Update KeyStore key password in gradle properties
         run: sed -i 's/#{KEY_PASSWORD}#/${{ secrets.KEY_PASSWORD }}/g' android/key.properties
-      - name: Update Firebase API Key in your Flutter app
-        run: sed -i "s/#FIREBASE_API_KEY#/${{ secrets.FIREBASE_API_KEY }}/g" android/app/google-services.json
+      # - name: Update Firebase API Key in your Flutter app
+      #   run: sed -i "s/#FIREBASE_API_KEY#/${{ secrets.FIREBASE_API_KEY }}/g" android/app/google-services.json
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
