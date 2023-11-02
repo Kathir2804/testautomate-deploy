@@ -2,8 +2,7 @@
 $GitHubUsername = "Kathir2804"
 $GitHubRepo = "testautomate-deploy"
 $WorkflowID = "devtest.yaml"
-$PAT = "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"
-
+$PAT = "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"
 # GitHub API endpoint for triggering a workflow dispatch
 $ApiEndpoint = "https://api.github.com/repos/$GitHubUsername/$GitHubRepo/actions/workflows/$WorkflowID/dispatches"
 
