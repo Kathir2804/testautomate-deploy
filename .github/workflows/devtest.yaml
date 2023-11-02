@@ -60,7 +60,7 @@ jobs:
         with:
           name: gitversion
       - name: Create new file without newline char from version.txt
-        run: tr -d '\n' < ${{ env.version }} > version1.txt
+        run: tr -d '\n' < version.txt > version1.txt
       - name: Authenticate with Google Cloud
         env:
           GCP_APPLICATION_CREDENTIALS: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
@@ -76,6 +76,9 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: version1.txt
+      # - name: Read version number
+      #   id: read-version
+      #   run: echo ::set-output name=version::$(cat gitversion/version.txt)
       - name: Update version in YAML
         run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
       - name: Print version number
