@@ -2,6 +2,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
+        android:isTV="true"
         android:label="CargoEZ Tower"
         android:name="${applicationName}"
         android:banner="@drawable/banner"

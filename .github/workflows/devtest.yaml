@@ -16,13 +16,13 @@ on:
         default: 'devtest'
 
 jobs:  
-  comment-trigger:
-    name: Trigger Workflow on Comment
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check Comment Content
-        id: check-comment
-        run: echo "::set-output name=trigger::${{ contains(github.event.comment.body, 'deploy') }}"     
+  # comment-trigger:
+  #   name: Trigger Workflow on Comment
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check Comment Content
+  #       id: check-comment
+  #       run: echo "::set-output name=trigger::${{ contains(github.event.comment.body, 'deploy') }}"     
   version:
     name: Create version number
     runs-on: ubuntu-latest
@@ -49,8 +49,9 @@ jobs:
      
   build:
     name: Build APK and Create release
-    needs: [version, comment-trigger]
-    if: ${{ needs.comment-trigger.outputs.trigger == 'true' }}
+    # needs: [version, comment-trigger]
+    needs: [version ]
+    # if: ${{ needs.comment-trigger.outputs.trigger == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -115,12 +116,12 @@ jobs:
         with:
           name: appbundle
 
-      # - name: Check if build is for Android TV
-      #   id: check-android-tv
-      #   run: echo Check if the build is for Android TV ${{ steps.check-android-tv.outputs.check-android-tv }}
+      - name: Check if build is for Android TV
+        id: check-android-tv
+        run: echo Check if the build is for Android TV ${{ steps.check-android-tv.outputs.check-android-tv }}
 
       - name: Release app to internal track for Android TV
-        # if: steps.check-android-tv.outputs.check-android-tv == 'true'
+        if: steps.check-android-tv.outputs.check-android-tv == 'true'
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
