@@ -115,12 +115,12 @@ jobs:
         # if: steps.check-android-tv.outputs.check-android-tv == 'true'
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
+          serviceAccountJsonPlainText: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
           packageName: com.avow.cez_tower
           releaseFiles: app-release.aab
           track: internal
-          whatsNewDirectory: distribution/whatsnew
-          inAppUpdatePriority: 0
+          # whatsNewDirectory: distribution/whatsnew
+          # inAppUpdatePriority: 0
           status: completed
-          changesNotSentForReview: false
-          working-directory: ${{ github.workspace }}
+          # changesNotSentForReview: false
+          # working-directory: ${{ github.workspace }}

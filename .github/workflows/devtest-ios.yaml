@@ -17,13 +17,10 @@ on:
 
 jobs:
   deployIos:
-    name: 🍏📦🚀 Build & deploy iOS ${{ inputs.short-environment-name }} release
+    name: 🍏 Build & deploy iOS release
     runs-on: macos-latest
-    environment:
-      name: ${{ inputs.environment-name }}
-      url: ${{ inputs.environment-url }}
     steps:
-      - name: ⬇️ Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v3
       - name: 🔐 Install Apple certificate and provisioning profile
         env:
@@ -33,13 +30,11 @@ jobs:
           KEYCHAIN_PASSWORD: "${{ secrets.IOS_RUNNER_LOCAL_KEYCHAIN_PASSWORD }}"
           EXPORT_OPTIONS_BASE64: "${{ secrets.IOS_EXPORT_OPTIONS_BASE64 }}"
         run: |
-          # create variables
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           PROVISIONING_PROFILE_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           EXPORT_OPTIONS_PATH="${{ github.workspace }}/app/ios/Runner/ExportOptions.plist"
 
-          # import certificate, provisioning profile and export options from secrets
           echo -n "$P12_DISTRIBUTION_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
           echo -n "$DISTRIBUTION_PROVISIONING_PROFILE_BASE64" | base64 --decode -o $PROVISIONING_PROFILE_PATH
           echo -n "$EXPORT_OPTIONS_BASE64" | base64 --decode -o $EXPORT_OPTIONS_PATH
@@ -62,7 +57,7 @@ jobs:
       - name: ⚙️ Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.7.0"
+          flutter-version: "3.13.0"
           channel: 'stable'
           cache: true
         id: flutter
