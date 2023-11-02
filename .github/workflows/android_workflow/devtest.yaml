@@ -2,8 +2,9 @@ name: DemoApp PlayStore Release
 
 on:
   push:
-    branches: [test-dev]
-     paths:
+    branches:
+      - test-dev
+    paths:
       - 'android_workflow/devtest.yaml'
   pull_request:
     types:
