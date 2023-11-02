@@ -17,12 +17,12 @@ on:
 
 jobs:  
   comment-trigger:
-  name: Trigger Workflow on Comment
-  runs-on: ubuntu-latest
-  steps:
-    - name: Check Comment Content
-      id: check-comment
-      run: echo "::set-output name=trigger::${{ contains(github.event.comment.body, 'deploy') }}"     
+    name: Trigger Workflow on Comment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Comment Content
+        id: check-comment
+        run: echo "::set-output name=trigger::${{ contains(github.event.comment.body, 'deploy') }}"     
   version:
     name: Create version number
     runs-on: ubuntu-latest
