@@ -82,7 +82,7 @@ jobs:
       - name: Update version in YAML
         run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
       - name: Print version number
-        run: echo "Version number is ${{ steps.read-version.outputs.version }}"
+        run: echo "Version number is ${{ steps.version.outputs.content }}"
       - name: Update KeyStore password in gradle properties
         run: sed -i 's/#{STORE_PASSWORD}#/${{ secrets.STORE_PASSWORD }}/g' android/key.properties
       - name: Update KeyStore key password in gradle properties
