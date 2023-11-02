@@ -60,7 +60,7 @@ jobs:
       #   with:
       #     name: gitversion
       - name: Create new file without newline char from version.txt
-        run: tr -d '\n' < version.txt > version1.txt
+        run: tr -d '\n' < ${{ env.version }} > version1.txt
       - name: Authenticate with Google Cloud
         env:
           GCP_APPLICATION_CREDENTIALS: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
