@@ -4,6 +4,8 @@ on:
   push:
     branches: [test-dev]
   pull_request:
+    types:
+      - closed
     branches: [main]
 
   workflow_dispatch:
