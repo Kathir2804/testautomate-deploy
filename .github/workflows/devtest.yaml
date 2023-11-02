@@ -41,11 +41,11 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0.9.7
       - name: Create version.txt with nuGetVersion
         run: echo "version=${{ steps.gitversion.outputs.nuGetVersion }}" >> $GITHUB_ENV
-      - name: Upload version.txt
-        uses: actions/upload-artifact@v2
-        with:
-          name: gitversion
-          path: version.txt
+      # - name: Upload version.txt
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: gitversion
+      #     path: version.txt
      
   build:
     name: Build APK and Create release
@@ -55,10 +55,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Get version.txt
-        uses: actions/download-artifact@v2
-        with:
-          name: gitversion
+      # - name: Get version.txt
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: gitversion
       - name: Create new file without newline char from version.txt
         run: tr -d '\n' < version.txt > version1.txt
       - name: Authenticate with Google Cloud
