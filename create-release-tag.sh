@@ -34,7 +34,7 @@ tag="v$(date '+%Y%m%d%H%M%S')"
 git tag "$tag"
 git push origin "$tag"
 
-# Print the created tag to the terminal
+# Print the created tag to the terinal
 echo "Created and pushed tag: $tag"
 # Create a Git tag
 git tag -a "v$new_version" -m "Version $new_version"
