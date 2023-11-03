@@ -48,8 +48,8 @@ jobs:
     needs: [version ]
     runs-on: ubuntu-latest
     steps:
-      - name: Set Environment Variable
-        run: echo "VERSION_INCREMENT=major" >> $GITHUB_ENV 
+      # - name: Set Environment Variable
+      #   run: echo "VERSION_INCREMENT=major" >> $GITHUB_ENV 
       - uses: actions/checkout@v1
       - name: Get version.txt
         uses: actions/download-artifact@v2
@@ -73,15 +73,15 @@ jobs:
         with:
           path: version1.txt
             
-      - name: Determine Version Increment
-        id: determine-version-increment
-        run: |
-            echo "::set-output name=increment::$VERSION_INCREMENT"
-            echo "Version increment is $GITHUB_ENV "
-        env:
-            VERSION_INCREMENT: ${{ env.VERSION_INCREMENT }}
-      - name: Debug Output
-        run: echo "Increment value is ${{ steps.determine-version-increment.outputs.increment }}"
+      # - name: Determine Version Increment
+      #   id: determine-version-increment
+      #   run: |
+      #       echo "::set-output name=increment::$VERSION_INCREMENT"
+      #       echo "Version increment is $GITHUB_ENV "
+      #   env:
+      #       VERSION_INCREMENT: ${{ env.VERSION_INCREMENT }}
+      # - name: Debug Output
+      #   run: echo "Increment value is ${{ steps.determine-version-increment.outputs.increment }}"
       - name: Extract Tag Version
         id: extract-tag-version
         run: echo "::set-output name=tag_version::${GITHUB_REF#refs/tags/}"
