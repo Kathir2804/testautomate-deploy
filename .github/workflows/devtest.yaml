@@ -79,7 +79,12 @@ jobs:
           path: version1.txt
       - name: Determine version increment
         id: determine-increment
-        run: echo "::set-output name=increment::minor"  # Set the default increment to "minor"
+        run: |
+          # Your logic to determine the increment
+          # For example, you can use inputs, environment variables, or any other method to specify the increment.
+          # Here's a basic example using an environment variable:
+          echo "::set-output name=increment::${{ env.VERSION_INCREMENT }}"  # Set the increment based on the environment variable
+
       - name: Update version in YAML
         run: |
           # Determine which part to increment
