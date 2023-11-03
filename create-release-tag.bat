@@ -35,34 +35,33 @@ set new_version=%major%.%minor%.%patch%+%build%
 REM Create the tag version 
 set new_tag=%major%.%minor%.%patch%
 
-REM Create a Git tag
-echo tag -a "v%new_version%" -m "Version %new_version%"
-
 REM Print the newly created tag to the terminal
-echo v%new_version%
-echo v%new_tag%
+echo version   %new_version%
+echo tag   %new_tag%
 
-set /p Update=Update tag in pubspec.yaml? (y/n):
+set /p Update=Update tvesrion in pubspec.yaml? (y/n):
 set /p push=Can i push the Updated code in git ? (y/n):
-echo Update is %Update%
 
 if "%Update%"=="y" (
-  git add .
-  git commit -m "Update version to %new_version%"
-  git push
+  if "%push%"=="y" (
+    git add .
+    git commit -m "Update version to %new_version%"
+    git push
+    set done="true"
+  )
+) else (
+  echo "First Update the code"
+  set done="false"
 )
-@REM  else if "%Update%"=="Y" (
-@REM   git add .
-@REM   git commit -m "Update version to %new_version%"
-@REM   git push
-@REM )
-
-@REM set /p git_tag=Tag the commit with a version (y/n)||(Y/N):
-@REM if /i "%git_tag%"=="y" (
-@REM   git tag -a "v%new_version%" -m "Version %new_version%"
-@REM )
-
-@REM set /p push=Push the newly created tag to Git? (y/n)||(Y/N):
-@REM if /i "%push%"=="y" (
-@REM   git push origin "v%new_version%"
-@REM )
+if "%done%"=="true" (
+  set /p git_tag=Tag the commit with a version (y/n)||(Y/N):
+  if "%git_tag%"=="y" (
+    echo git tag -a "v%new_tag%" -m "Version %new_tag%"
+    git tag -a "v%new_tag%" -m "Version %new_tag%"
+  )
+  set /p push=Push the newly created tag to Git? (y/n)||(Y/N):
+  if "%push%"=="y" (
+    echo git push origin "v%new_tag%"
+    git push origin "v%new_tag%"
+  )
+)
