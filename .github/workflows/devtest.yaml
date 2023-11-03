@@ -85,6 +85,11 @@ jobs:
       - name: Extract Tag Version
         id: extract-tag-version
         run: echo "::set-output name=tag_version::${GITHUB_REF#refs/tags/}"
+      - name: Remove "v" prefix from Tag Version
+        run: |
+          TAG_VERSION="${{ steps.extract-tag-version.outputs.tag_version }}"
+          TAG_VERSION="${TAG_VERSION#"v"}"
+          echo "::set-output name=tag_version::$TAG_VERSION"
       - name: Update Version in pubspec.yaml
         run: |
          sed -i "s/version: .*/version: ${{ steps.extract-tag-version.outputs.tag_version }}/g" pubspec.yaml
