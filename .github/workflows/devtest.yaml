@@ -15,9 +15,6 @@ on:
         description: 'Select the workflow to run'
         required: true
         default: 'devtest'
-      version:
-        description: 'Specify the version number'
-        required: true
 
 jobs:  
   # comment-trigger:
@@ -80,11 +77,6 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: version1.txt
-      - name: Update version in YAML
-        run: |
-          sed -i "s/99.99.99+99/${{ inputs.version }}+${{ github.run_number }}/g" pubspec.yaml
-        env:
-          INPUT_VERSION: ${{ inputs.version }}
       - name: Update version in YAML
         run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
       - name: Print version number
