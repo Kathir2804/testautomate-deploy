@@ -54,6 +54,8 @@ jobs:
     needs: [version ]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+         uses: actions/checkout@v2
       - name: Set Tag
         run: |
           tag="${{ env.GITHUB_REF }}/v${{ steps.version-from-pubspec.outputs.pubspec_version }}"
