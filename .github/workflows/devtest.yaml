@@ -90,7 +90,7 @@ jobs:
       - name: Debug Output
         run: echo "Increment value is ${{ steps.determine-version-increment.outputs.increment }}"
       - name: Update Version Based on Increment
-        if: steps.determine-version-increment.outputs.increment == 'major'
+        if: $GITHUB_ENV == 'major'
         run: |
           perl -i -pe 's/^(version:\s+\d+\.)\d+(\.\d+\+\d+)$/$1($2+1)/e' pubspec.yaml
       # - name: Update version in YAML
