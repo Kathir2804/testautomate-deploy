@@ -2,8 +2,6 @@ name: DemoApp PlayStore Release
 
 on:
   push:
-    # branches:
-    #   - test-dev
     tags:
       - 'v*'
   pull_request:
