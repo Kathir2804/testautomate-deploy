@@ -84,7 +84,7 @@ jobs:
         id: determine-version-increment
         run: |
             echo "::set-output name=increment::$VERSION_INCREMENT"
-            echo "Version increment is $VERSION_INCREMENT"
+            echo "Version increment is $GITHUB_ENV "
         env:
             VERSION_INCREMENT: ${{ env.VERSION_INCREMENT }}
       - name: Debug Output
