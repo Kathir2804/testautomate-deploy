@@ -55,8 +55,8 @@ jobs:
     # if: ${{ needs.comment-trigger.outputs.trigger == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Set Environment Variable
-        run: echo "VERSION_INCREMENT=major" >> $GITHUB_ENV 
+      # - name: Set Environment Variable
+      #   run: echo "VERSION_INCREMENT=major" >> $GITHUB_ENV 
       - uses: actions/checkout@v1
       - name: Get version.txt
         uses: actions/download-artifact@v2
@@ -83,14 +83,15 @@ jobs:
       - name: Determine Version Increment
         id: determine-version-increment
         run: |
-            echo "::set-output name=increment::$VERSION_INCREMENT"
+            # echo "::set-output name=increment::$VERSION_INCREMENT"
+            echo "VERSION_INCREMENT=major" >> $GITHUB_ENV
             echo "Version increment is $GITHUB_ENV "
         env:
-            VERSION_INCREMENT: ${{ env.VERSION_INCREMENT }}
+            VERSION_INCREMENT: ${{ env.GITHUB_ENV }}
       - name: Debug Output
         run: echo "Increment value is ${{ steps.determine-version-increment.outputs.increment }}"
       - name: Update Version Based on Increment
-        if: $GITHUB_ENV == 'major'
+        if: steps.determine-version-increment.outputs.increment == 'major'
         run: |
           perl -i -pe 's/^(version:\s+\d+\.)\d+(\.\d+\+\d+)$/$1($2+1)/e' pubspec.yaml
       # - name: Update version in YAML
