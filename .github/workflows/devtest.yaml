@@ -85,8 +85,8 @@ jobs:
         run: |
           increment=$VERSION_INCREMENT
           echo "Version increment is $increment"
-      env:
-        VERSION_INCREMENT: ${{ env.VERSION_INCREMENT }}
+        env:
+          VERSION_INCREMENT: ${{ env.VERSION_INCREMENT }}
       - name: Debug Output
         run: echo "Increment value is ${{ steps.determine-version-increment.outputs.increment }}"
       - name: Update Version Based on Increment
