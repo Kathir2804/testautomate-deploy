@@ -87,7 +87,7 @@ jobs:
         run: echo "::set-output name=tag_version::${GITHUB_REF#refs/tags/}"
       - name: Update Version in pubspec.yaml
         run: |
-         sed -i "s/version: .*/version: '${{ steps.extract-tag-version.outputs.tag_version }}'/g" pubspec.yaml
+         sed -i "s/version: .*/version: ${{ steps.extract-tag-version.outputs.tag_version }}/g" pubspec.yaml
       # - name: Update version in YAML
       #   run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
       - name: Print version number
