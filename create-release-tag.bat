@@ -47,11 +47,11 @@ if "%Update%"=="y" (
     git add .
     git commit -m "Update version to %new_version%"
     git push
-    set done="true"
+    set done=true
   )
 ) else (
   echo "First Update the code"
-  set done="false"
+  set done=false
 )
 echo %done%
 set /p git_tag=Tag the commit with a version (y/n):
