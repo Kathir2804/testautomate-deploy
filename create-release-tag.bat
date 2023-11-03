@@ -53,6 +53,7 @@ if "%Update%"=="y" (
   echo "First Update the code"
   set done="false"
 )
+echo %done%
 set /p git_tag=Tag the commit with a version (y/n):
 set /p push=Push the newly created tag to Git? (y/n):
 if "%done%"=="true" (
