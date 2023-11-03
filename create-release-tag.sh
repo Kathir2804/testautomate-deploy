@@ -27,12 +27,6 @@ fi
 
 # Create the new version
 new_version="$major.$minor.$patch"
-# Generate a unique tag based on the current date and time
-tag="v$(date '+%Y%m%d%H%M%S')"
-
-# Create and push the tag
-git tag "$tag"
-git push origin "$tag"
 
 # Print the created tag to the terinal
 echo "Created and pushed tag: $tag"
