@@ -54,12 +54,12 @@ if "%Update%"=="y" (
   set done="false"
 )
 set /p git_tag=Tag the commit with a version (y/n):
+set /p push=Push the newly created tag to Git? (y/n):
 if "%done%"=="true" (
   if "%git_tag%"=="y" (
     echo git tag -a "v%new_tag%" -m "Version %new_tag%"
     git tag -a "v%new_tag%" -m "Version %new_tag%"
   )
-  set /p push=Push the newly created tag to Git? (y/n)||(Y/N):
   if "%push%"=="y" (
     echo git push origin "v%new_tag%"
     git push origin "v%new_tag%"
