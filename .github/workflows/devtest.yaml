@@ -79,7 +79,7 @@ jobs:
           path: version1.txt
       - name: Set Environment Variable
         run: echo "VERSION_INCREMENT=major" >> $GITHUB_ENV 
-       - name: Determine Version Increment
+      - name: Determine Version Increment
         id: determine-version-increment
         run: |
           increment=$VERSION_INCREMENT
