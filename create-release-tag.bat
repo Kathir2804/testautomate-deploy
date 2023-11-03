@@ -45,7 +45,7 @@ set /p push=Can i push the Updated code in git ? (y/n):
 if "%Update%"=="y" (
   if "%push%"=="y" (
     git add .
-    git commit -m "Update version to %new_version%"
+    git commit -m "PlayStore Release v%new_version%"
     git push
     set done=true
   )
