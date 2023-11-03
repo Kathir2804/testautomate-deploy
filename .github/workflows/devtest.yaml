@@ -55,6 +55,8 @@ jobs:
     # if: ${{ needs.comment-trigger.outputs.trigger == 'true' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Set Environment Variable
+        run: echo "VERSION_INCREMENT=major" >> $GITHUB_ENV 
       - uses: actions/checkout@v1
       - name: Get version.txt
         uses: actions/download-artifact@v2
@@ -77,8 +79,7 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: version1.txt
-      - name: Set Environment Variable
-        run: echo "VERSION_INCREMENT=major" >> $GITHUB_ENV 
+      
       - name: Determine Version Increment
         id: determine-version-increment
         run: |
