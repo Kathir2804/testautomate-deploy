@@ -53,8 +53,8 @@ if "%Update%"=="y" (
   echo "First Update the code"
   set done="false"
 )
+set /p git_tag=Tag the commit with a version (y/n):
 if "%done%"=="true" (
-  set /p git_tag=Tag the commit with a version (y/n)||(Y/N):
   if "%git_tag%"=="y" (
     echo git tag -a "v%new_tag%" -m "Version %new_tag%"
     git tag -a "v%new_tag%" -m "Version %new_tag%"
