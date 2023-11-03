@@ -19,13 +19,6 @@ on:
         default: 'devtest'
 
 jobs:  
-  # comment-trigger:
-  #   name: Trigger Workflow on Comment
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Check Comment Content
-  #       id: check-comment
-  #       run: echo "::set-output name=trigger::${{ contains(github.event.comment.body, 'deploy') }}"     
   version:
     name: Create version number
     runs-on: ubuntu-latest
@@ -35,11 +28,6 @@ jobs:
         run: |
           git config remote.origin.url https://x-access-token:${{ secrets.TOKEN }}@github.com/${{ github.repository }}
           git fetch --prune --depth=10000
-            - uses: actions/checkout@v2
-      - uses: Klemensas/action-autotag@stable
-        with:
-          GITHUB_TOKEN: "${{ secrets.TOKEN }}"
-          tag_prefix: "v"
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v0.9.7
         with:
@@ -54,14 +42,24 @@ jobs:
         with:
           name: gitversion
           path: version.txt
+      - name: Get version from pubspec.yaml
+        id: version-from-pubspec
+        run: |
+          version=$(grep -oP 'version:\s*\K[\d.]+(\+\d+)?' pubspec.yaml)
+          echo "Version from pubspec.yaml is $version"
+          echo "::set-output name=pubspec_version::$version"
      
   build:
     name: Build APK and Create release
-    # needs: [version, comment-trigger]
     needs: [version ]
-    # if: ${{ needs.comment-trigger.outputs.trigger == 'true' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Set Tag
+        run: |
+          tag="${{ env.GITHUB_REF }}/v${{ steps.version-from-pubspec.outputs.pubspec_version }}"
+          echo "Tag to set: $tag"
+          git tag -a $tag -m "Tagging release with version ${{ steps.version-from-pubspec.outputs.pubspec_version }}"
+          git push origin $tag
       - name: Set Environment Variable
         run: echo "VERSION_INCREMENT=major" >> $GITHUB_ENV 
       - uses: actions/checkout@v1
