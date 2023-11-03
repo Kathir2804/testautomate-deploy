@@ -57,6 +57,7 @@ echo %done%
 set /p git_tag=Tag the commit with a version (y/n):
 set /p push=Push the newly created tag to Git? (y/n):
 if "%done%"=="true" (
+  echo flutter pub version %new_version%
   if "%git_tag%"=="y" (
     echo git tag -a "v%new_tag%" -m "Version %new_tag%"
     git tag -a "v%new_tag%" -m "Version %new_tag%"
