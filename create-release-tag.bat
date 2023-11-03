@@ -37,7 +37,7 @@ set new_tag=%major%.%minor%.%patch%
 
 REM Print the newly created tag to the terminal
 echo version   %new_version%
-echo tag   %new_tag%
+echo tag   v%new_tag%
 
 set /p Update=Update tvesrion in pubspec.yaml? (y/n):
 set /p push=Can i push the Updated code in git ? (y/n):
@@ -53,11 +53,9 @@ if "%Update%"=="y" (
   echo "First Update the code"
   set done=false
 )
-echo %done%
 set /p git_tag=Tag the commit with a version (y/n):
 set /p push=Push the newly created tag to Git? (y/n):
 if "%done%"=="true" (
-  echo flutter pub version %new_version%
   if "%git_tag%"=="y" (
     echo git tag -a "v%new_tag%" -m "Version %new_tag%"
     git tag -a "v%new_tag%" -m "Version %new_tag%"
