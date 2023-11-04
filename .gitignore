@@ -46,4 +46,4 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 android/app/google-services.json
-create-release-tag.bat
+create-release-tag1.bat
