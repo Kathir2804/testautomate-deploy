@@ -46,8 +46,6 @@ jobs:
     needs: [version ]
     runs-on: ubuntu-latest
     steps:
-      # - name: Set Environment Variable
-      #   run: echo "VERSION_INCREMENT=major" >> $GITHUB_ENV 
       - uses: actions/checkout@v1
       - name: Get version.txt
         uses: actions/download-artifact@v2
@@ -70,29 +68,8 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: version1.txt
-            
-      # - name: Determine Version Increment
-      #   id: determine-version-increment
-      #   run: |
-      #       echo "::set-output name=increment::$VERSION_INCREMENT"
-      #       echo "Version increment is $GITHUB_ENV "
-      #   env:
-      #       VERSION_INCREMENT: ${{ env.VERSION_INCREMENT }}
-      # - name: Debug Output
-      #   run: echo "Increment value is ${{ steps.determine-version-increment.outputs.increment }}"
-      - name: Extract Tag Version
-        id: extract-tag-version
-        run: echo "::set-output name=tag_version::${GITHUB_REF#refs/tags/}"
-      - name: Remove "v" prefix from Tag Version
-        run: |
-          TAG_VERSION="${{ steps.extract-tag-version.outputs.tag_version }}"
-          TAG_VERSION="${TAG_VERSION#"v"}"
-          echo "::set-output name=tag_version::$TAG_VERSION"
-      - name: Update Version in pubspec.yaml
-        run: |
-         sed -i "s/version: .*/version: ${{ steps.extract-tag-version.outputs.tag_version }}/g" pubspec.yaml
-      # - name: Update version in YAML
-      #   run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
+      - name: Update version in YAML
+        run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
       - name: Print version number
         run: echo "Version number is ${{ steps.version.outputs.content }}"
       - name: Print version number
