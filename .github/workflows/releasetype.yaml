@@ -16,5 +16,5 @@ jobs:
         with:
           workflow: devtest.yml
           inputs:
-            workflow-id: devtest
+            workflow-id: build
             release-track: 4 
