@@ -130,7 +130,6 @@ jobs:
       - name: Set up environment variables
         run: |
           echo "RELEASE_TRACK=${{ env.RELEASE_TRACK }}" >> $GITHUB_ENV
-          echo "${{ env.RELEASE_TRACK }}"
         shell: bash
 
       - name: Release app to internal track for Android TV
