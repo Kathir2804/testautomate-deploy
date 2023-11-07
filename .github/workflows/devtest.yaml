@@ -53,14 +53,14 @@ jobs:
           name: gitversion
       - name: Create new file without newline char from version.txt
         run: tr -d '\n' < version.txt > version1.txt
-      - name: Authenticate with Google Cloud
-        env:
-          GCP_APPLICATION_CREDENTIALS: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
-        run: |
-          echo "$GCP_APPLICATION_CREDENTIALS" > gcp-key.json
-          gcloud auth activate-service-account --key-file=gcp-key.json --project=cez-app
-      - name: Download Keystore
-        run: gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/upload-keystore.jks
+      # - name: Authenticate with Google Cloud
+      #   env:
+      #     GCP_APPLICATION_CREDENTIALS: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
+      #   run: |
+      #     echo "$GCP_APPLICATION_CREDENTIALS" > gcp-key.json
+      #     gcloud auth activate-service-account --key-file=gcp-key.json --project=cez-app
+      # - name: Download Keystore
+      #   run: gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/upload-keystore.jks
       # - name: Download google-services.json
       #   run: gsutil cp gs://cez-mob-gitactions/google-services.json android/app/google-services.json
       - name: Read version
@@ -74,10 +74,10 @@ jobs:
         run: echo "Version number is ${{ steps.version.outputs.content }}"
       - name: Print version number
         run: cat pubspec.yaml
-      - name: Update KeyStore password in gradle properties
-        run: sed -i 's/#{STORE_PASSWORD}#/${{ secrets.STORE_PASSWORD }}/g' android/key.properties
-      - name: Update KeyStore key password in gradle properties
-        run: sed -i 's/#{KEY_PASSWORD}#/${{ secrets.KEY_PASSWORD }}/g' android/key.properties
+      # - name: Update KeyStore password in gradle properties
+      #   run: sed -i 's/#{STORE_PASSWORD}#/${{ secrets.STORE_PASSWORD }}/g' android/key.properties
+      # - name: Update KeyStore key password in gradle properties
+      #   run: sed -i 's/#{KEY_PASSWORD}#/${{ secrets.KEY_PASSWORD }}/g' android/key.properties
       # - uses: actions/setup-java@v1
       #   with:
       #     java-version: '12.x'
