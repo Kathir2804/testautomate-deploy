@@ -126,10 +126,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: appbundle
-
-      - name: Check if build is for Android TV
-        id: check-android-tv
-        run: echo Check if the build is for Android TV ${{ steps.check-android-tv.outputs.check-android-tv }}
+       
+      - name: Set up environment variables
+        run: |
+          echo "RELEASE_TRACK=${{ env.RELEASE_TRACK }}" >> $GITHUB_ENV
+        shell: bash
 
       - name: Release app to internal track for Android TV
         if: steps.check-android-tv.outputs.check-android-tv == 'true'
@@ -138,7 +139,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
           packageName: com.avow.cez_tower
           releaseFiles: app-release.aab
-          track: ${{ inputs.track }}
+          track: ${{ env.RELEASE_TRACK }}
           # whatsNewDirectory: distribution/whatsnew
           # inAppUpdatePriority: 0
           status: completed
