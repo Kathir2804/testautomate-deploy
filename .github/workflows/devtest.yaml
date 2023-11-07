@@ -1,24 +1,23 @@
 name: DemoApp PlayStore Release
 
 on:
-  # push:
-  #   tags:
-  #     - 'v*'
+  push:
+    tags:
+      - 'v*'
   pull_request:
     types:
       - closed
     branches: [main]
 
-    workflow_dispatch:
+  workflow_dispatch:
     inputs:
       workflow-id:
         description: 'Select the workflow to run'
         required: true
         default: 'devtest'
-      release-track:
-        description: 'Select the release track (1: production, 2: beta, 3: alpha, 4: internal, 5: TV beta, 6: TV internal, 7: TV production)'
+      track:
+        description: 'Select the release track'
         required: true
-        default: 1
 
 jobs:  
   version:
@@ -26,6 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Set track
+        run: echo "::set-env name=TRACK::${{ inputs.track }}"
       - name: Fetch all history for all tags and branches
         run: |
           git config remote.origin.url https://x-access-token:${{ secrets.TOKEN }}@github.com/${{ github.repository }}
@@ -137,7 +138,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
           packageName: com.avow.cez_tower
           releaseFiles: app-release.aab
-          track: ${{ github.event.inputs.release-track }}
+          track: ${{ inputs.track }}
           # whatsNewDirectory: distribution/whatsnew
           # inAppUpdatePriority: 0
           status: completed
