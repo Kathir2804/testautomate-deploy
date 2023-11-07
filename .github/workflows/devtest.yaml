@@ -15,9 +15,6 @@ on:
         description: 'Select the workflow to run'
         required: true
         default: 'devtest'
-      track:
-        description: 'Select the release track'
-        required: true
 
 jobs:  
   version:
