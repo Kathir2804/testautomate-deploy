@@ -110,32 +110,32 @@ jobs:
       #   with:
       #     name: appbundle
       #     path: build/app/outputs/bundle/release/app-release.aab
-  # release:
-  #   name: Release app to internal track
-  #   needs: [build]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v1
+  release:
+    name: Release app to internal track
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
 
-  #     - name: Get appbundle from artifacts
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: appbundle
+      - name: Get appbundle from artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: appbundle
 
-  #     - name: Check if build is for Android TV
-  #       id: check-android-tv
-  #       run: echo Check if the build is for Android TV ${{ steps.check-android-tv.outputs.check-android-tv }}
+      - name: Check if build is for Android TV
+        id: check-android-tv
+        run: echo Check if the build is for Android TV ${{ steps.check-android-tv.outputs.check-android-tv }}
 
-  #     - name: Release app to internal track for Android TV
-  #       if: steps.check-android-tv.outputs.check-android-tv == 'true'
-  #       uses: r0adkll/upload-google-play@v1
-  #       with:
-  #         serviceAccountJsonPlainText: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
-  #         packageName: com.avow.cez_tower
-  #         releaseFiles: app-release.aab
-  #         track: your_new_track_value
-  #         # whatsNewDirectory: distribution/whatsnew
-  #         # inAppUpdatePriority: 0
-  #         status: completed
-  #         # changesNotSentForReview: false
-  #         # working-directory: ${{ github.workspace }}
+      - name: Release app to internal track for Android TV
+        if: steps.check-android-tv.outputs.check-android-tv == 'true'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
+          packageName: com.avow.cez_tower
+          releaseFiles: app-release.aab
+          track: your_new_track_value
+          # whatsNewDirectory: distribution/whatsnew
+          # inAppUpdatePriority: 0
+          status: completed
+          # changesNotSentForReview: false
+          # working-directory: ${{ github.workspace }}
