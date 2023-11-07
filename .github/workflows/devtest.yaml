@@ -15,6 +15,9 @@ on:
         description: 'Select the workflow to run'
         required: true
         default: 'devtest'
+      track:
+        description: 'Select the release track'
+        required: true
 
 jobs:  
   version:
@@ -22,8 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Set track
-        run: echo "::set-env name=TRACK::${{ inputs.track }}"
       - name: Fetch all history for all tags and branches
         run: |
           git config remote.origin.url https://x-access-token:${{ secrets.TOKEN }}@github.com/${{ github.repository }}
