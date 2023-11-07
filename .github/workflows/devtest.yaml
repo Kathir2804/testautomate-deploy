@@ -2,7 +2,8 @@ name: DemoApp PlayStore Release
 
 on:
   push:
-    branches: [test-dev]
+    tags:
+      - 'v*'
   pull_request:
     types:
       - closed
@@ -14,8 +15,18 @@ on:
         description: 'Select the workflow to run'
         required: true
         default: 'devtest'
+  workflow_dispatch:
+  inputs:
+    workflow-id:
+      description: 'Select the workflow to run'
+      required: true
+      default: 'devtest'
+    release-track:
+      description: 'Select the release track (1: production, 2: beta, 3: alpha, 4: internal, 5: TV beta, 6: TV internal, 7: TV production)'
+      required: true
+      default: 1
 
-jobs:     
+jobs:  
   version:
     name: Create version number
     runs-on: ubuntu-latest
@@ -42,7 +53,7 @@ jobs:
      
   build:
     name: Build APK and Create release
-    needs: [version]
+    needs: [version ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -52,33 +63,41 @@ jobs:
           name: gitversion
       - name: Create new file without newline char from version.txt
         run: tr -d '\n' < version.txt > version1.txt
-      - name: Authenticate with Google Cloud
-        env:
-          GCP_APPLICATION_CREDENTIALS: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
-        run: |
-          echo "$GCP_APPLICATION_CREDENTIALS" > gcp-key.json
-          gcloud auth activate-service-account --key-file=gcp-key.json --project=cez-app
       # - name: Authenticate with Google Cloud
       #   env:
-      #     GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
-      #   run: gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
-      - name: Download Keystore
-        run: gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/upload-keystore.jks
-      - name: Download google-services.json
-        run: gsutil cp gs://cez-mob-gitactions/google-services.json android/app/google-services.json
+      #     GCP_APPLICATION_CREDENTIALS: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
+      #   run: |
+      #     echo "$GCP_APPLICATION_CREDENTIALS" > gcp-key.json
+      #     gcloud auth activate-service-account --key-file=gcp-key.json --project=cez-app
+      # - name: Download Keystore
+      #   run: gsutil cp gs://cez-mob-gitactions/upload-keystore.jks android/app/upload-keystore.jks
+      # - name: Download google-services.json
+      #   run: gsutil cp gs://cez-mob-gitactions/google-services.json android/app/google-services.json
       - name: Read version
         id: version
         uses: juliangruber/read-file-action@v1
         with:
           path: version1.txt
       - name: Update version in YAML
-        run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
+        run: |
+          sed -i "s/version: .*/version: ${{ steps.version.outputs.content }}+${{ github.run_number }}/g" pubspec.yaml
+      # - name: Update version in YAML
+      #   run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
+      - name: Print version number
+        run: echo "Version number is ${{ steps.version.outputs.content }}"
+      - name: Print version number
+        run: cat pubspec.yaml
+      - name: Create a Release in GitHub
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/app-release.aab"
+          token: ${{ secrets.TOKEN }}
+          tag: ${{ steps.version.outputs.content }}-internal
+          commit: ${{ github.sha }}
       - name: Update KeyStore password in gradle properties
         run: sed -i 's/#{STORE_PASSWORD}#/${{ secrets.STORE_PASSWORD }}/g' android/key.properties
       - name: Update KeyStore key password in gradle properties
         run: sed -i 's/#{KEY_PASSWORD}#/${{ secrets.KEY_PASSWORD }}/g' android/key.properties
-      # - name: Update Firebase API Key in your Flutter app
-      #   run: sed -i "s/#FIREBASE_API_KEY#/${{ secrets.FIREBASE_API_KEY }}/g" android/app/google-services.json
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
@@ -87,7 +106,7 @@ jobs:
           flutter-version: '3.13.0'
       - run: flutter clean
       - run: flutter pub get
-      - run: flutter build apk
+      # - run: flutter build apk
       - run: flutter build appbundle
       - name: Create a Release in GitHub
         uses: ncipollo/release-action@v1
@@ -113,20 +132,20 @@ jobs:
         with:
           name: appbundle
 
-      # - name: Check if build is for Android TV
-      #   id: check-android-tv
-      #   run: echo Check if the build is for Android TV ${{ steps.check-android-tv.outputs.check-android-tv }}
+      - name: Check if build is for Android TV
+        id: check-android-tv
+        run: echo Check if the build is for Android TV ${{ steps.check-android-tv.outputs.check-android-tv }}
 
       - name: Release app to internal track for Android TV
-        # if: steps.check-android-tv.outputs.check-android-tv == 'true'
+        if: steps.check-android-tv.outputs.check-android-tv == 'true'
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
+          serviceAccountJsonPlainText: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
           packageName: com.avow.cez_tower
           releaseFiles: app-release.aab
-          track: internal
-          whatsNewDirectory: distribution/whatsnew
-          inAppUpdatePriority: 0
+          track: ${{ github.event.inputs.release-track }}
+          # whatsNewDirectory: distribution/whatsnew
+          # inAppUpdatePriority: 0
           status: completed
-          changesNotSentForReview: false
-          working-directory: ${{ github.workspace }}
+          # changesNotSentForReview: false
+          # working-directory: ${{ github.workspace }}
