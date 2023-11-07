@@ -9,22 +9,16 @@ on:
       - closed
     branches: [main]
 
-  workflow_dispatch:
+    workflow_dispatch:
     inputs:
       workflow-id:
         description: 'Select the workflow to run'
         required: true
         default: 'devtest'
-  workflow_dispatch:
-  inputs:
-    workflow-id:
-      description: 'Select the workflow to run'
-      required: true
-      default: 'devtest'
-    release-track:
-      description: 'Select the release track (1: production, 2: beta, 3: alpha, 4: internal, 5: TV beta, 6: TV internal, 7: TV production)'
-      required: true
-      default: 1
+      release-track:
+        description: 'Select the release track (1: production, 2: beta, 3: alpha, 4: internal, 5: TV beta, 6: TV internal, 7: TV production)'
+        required: true
+        default: 1
 
 jobs:  
   version:
