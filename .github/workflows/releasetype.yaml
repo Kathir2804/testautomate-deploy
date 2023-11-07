@@ -1,0 +1,17 @@
+name: Main Android Workflow
+on:
+  workflow_run:
+    workflows: ["devtest.yml"]
+    types:
+      - workflow_run
+jobs:
+  trigger_android_workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Android Release Workflow
+        uses: actions/workflow-dispatch@v3
+        with:
+          workflow: devtest.yml
+          inputs:
+            workflow-id: devtest
+            release-track: 4 
