@@ -82,7 +82,7 @@ jobs:
         with:
           artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/app-release.aab"
           token: ${{ secrets.TOKEN }}
-          tag: ${{ steps.version.outputs.content }}-internal
+          tag: ${{ steps.version.outputs.content }} - tv:beta
           commit: ${{ github.sha }}
       # - name: Update KeyStore password in gradle properties
       #   run: sed -i 's/#{STORE_PASSWORD}#/${{ secrets.STORE_PASSWORD }}/g' android/key.properties
@@ -103,7 +103,7 @@ jobs:
       #   with:
       #     artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/app-release.aab"
       #     token: ${{ secrets.TOKEN }}
-      #     tag: ${{ steps.version.outputs.content }}
+      #     tag: ${{ steps.version.outputs.content }} - tv:beta
       #     commit: ${{ github.sha }}
       # - name: Upload app bundle
       #   uses: actions/upload-artifact@v2
@@ -133,7 +133,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
           packageName: com.avow.cez_tower
           releaseFiles: app-release.aab
-          track: your_new_track_value
+          track: tv:beta
           # whatsNewDirectory: distribution/whatsnew
           # inAppUpdatePriority: 0
           status: completed
