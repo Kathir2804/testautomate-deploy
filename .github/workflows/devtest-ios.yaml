@@ -1,12 +1,12 @@
-name: CD
-
+name: iOS binary build & upload
+ 
 on:
   push:
-    branch: [main]
-      
+    branches: [test-dev]
+    workflow_dispatch:
+ 
 jobs:
-  deploy:
-   name: Create version number
+ deploy:
    runs-on: macos-latest
    steps:
      - uses: actions/checkout@v2
