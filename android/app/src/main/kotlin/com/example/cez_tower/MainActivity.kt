@@ -1,4 +1,4 @@
-package com.avow.cez_tower
+package com.example.tower
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -141,7 +141,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
-          packageName: com.avow.cez_tower
+          packageName: com.example.tower
           releaseFiles: app-release.aab
           track: ${{ github.event.inputs.release-track }}
           # whatsNewDirectory: distribution/whatsnew
