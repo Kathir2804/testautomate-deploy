@@ -2,7 +2,7 @@ name: iOS binary build & upload
 
 on:
   push:
-    branches: [test-dev]
+    branches: [main]
   workflow_dispatch:
     inputs:
       workflow-id:
