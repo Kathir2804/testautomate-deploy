@@ -5,7 +5,8 @@ on:
     branch: [main]
       
 jobs:
- deploy:
+  deploy:
+   name: Create version number
    runs-on: macos-latest
    steps:
      - uses: actions/checkout@v2
