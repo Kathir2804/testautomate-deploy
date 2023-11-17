@@ -2,8 +2,9 @@ name: DemoApp PlayStore Release
 
 on:
   push:
-    tags:
-      - 'v*'
+    # tags:
+    #   - 'v*'
+    branches: [test-dev]
   pull_request:
     types:
       - closed
@@ -15,16 +16,6 @@ on:
         description: 'Select the workflow to run'
         required: true
         default: 'devtest'
-  workflow_dispatch:
-  inputs:
-    workflow-id:
-      description: 'Select the workflow to run'
-      required: true
-      default: 'devtest'
-    release-track:
-      description: 'Select the release track (1: production, 2: beta, 3: alpha, 4: internal, 5: TV beta, 6: TV internal, 7: TV production)'
-      required: true
-      default: 1
 
 jobs:  
   version:
@@ -92,34 +83,34 @@ jobs:
         with:
           artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/app-release.aab"
           token: ${{ secrets.TOKEN }}
-          tag: ${{ steps.version.outputs.content }}-internal
+          tag: ${{ steps.version.outputs.content }}-tv:internal
           commit: ${{ github.sha }}
-      - name: Update KeyStore password in gradle properties
-        run: sed -i 's/#{STORE_PASSWORD}#/${{ secrets.STORE_PASSWORD }}/g' android/key.properties
-      - name: Update KeyStore key password in gradle properties
-        run: sed -i 's/#{KEY_PASSWORD}#/${{ secrets.KEY_PASSWORD }}/g' android/key.properties
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: '3.13.0'
-      - run: flutter clean
-      - run: flutter pub get
+      # - name: Update KeyStore password in gradle properties
+      #   run: sed -i 's/#{STORE_PASSWORD}#/${{ secrets.STORE_PASSWORD }}/g' android/key.properties
+      # - name: Update KeyStore key password in gradle properties
+      #   run: sed -i 's/#{KEY_PASSWORD}#/${{ secrets.KEY_PASSWORD }}/g' android/key.properties
+      # - uses: actions/setup-java@v1
+      #   with:
+      #     java-version: '12.x'
+      # - uses: subosito/flutter-action@v1
+      #   with:
+      #     flutter-version: '3.13.0'
+      # - run: flutter clean
+      # - run: flutter pub get
       # - run: flutter build apk
-      - run: flutter build appbundle
-      - name: Create a Release in GitHub
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/app-release.aab"
-          token: ${{ secrets.TOKEN }}
-          tag: ${{ steps.version.outputs.content }}
-          commit: ${{ github.sha }}
-      - name: Upload app bundle
-        uses: actions/upload-artifact@v2
-        with:
-          name: appbundle
-          path: build/app/outputs/bundle/release/app-release.aab
+      # - run: flutter build appbundle
+      # - name: Create a Release in GitHub
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: "build/app/outputs/apk/release/*.apk,build/app/outputs/bundle/release/app-release.aab"
+      #     token: ${{ secrets.TOKEN }}
+      #     tag: ${{ steps.version.outputs.content }}-tv:internal
+      #     commit: ${{ github.sha }}
+      # - name: Upload app bundle
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: appbundle
+      #     path: build/app/outputs/bundle/release/app-release.aab
   release:
     name: Release app to internal track
     needs: [build]
@@ -143,7 +134,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.GCS_SERVICE_ACCOUNT_KEY }}
           packageName: com.example.tower
           releaseFiles: app-release.aab
-          track: ${{ github.event.inputs.release-track }}
+          track: tv:beta
           # whatsNewDirectory: distribution/whatsnew
           # inAppUpdatePriority: 0
           status: completed
