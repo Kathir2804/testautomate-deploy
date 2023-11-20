@@ -19,14 +19,17 @@ platform :ios do
   current_version = get_version_number(
     target: "Runner" # replace with your main target, required if you have more than one non-test target
   )
+  UI.message(current_version)
   latest_build_number = latest_testflight_build_number(
     api_key: api_key,
     version: current_version,
     app_identifier: app_identifier
   )
+  UI.message(latest_build_number)
   increment_build_number(
     build_number: (latest_build_number + 1),
   )
+  UI.message(increment_build_number)
   end
 
 
