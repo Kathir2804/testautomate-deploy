@@ -1,4 +1,4 @@
-app_identifier("com.avow.cargoez-app") # The bundle identifier of your app
+app_identifier("com.example.ceztTower") # The bundle identifier of your app
 apple_id("2RJJY4B445") # Your Apple Developer Portal username
 
 
