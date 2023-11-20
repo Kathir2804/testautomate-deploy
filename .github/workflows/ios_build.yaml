@@ -29,7 +29,7 @@ jobs:
 
       - name: Build & upload iOS binary
         run: |
-          cd /Users/avowsolutions/ws/practice/testautomate-deploy/ios
+          cd ios
           bundle exec fastlane ios build_upload_testflight
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
