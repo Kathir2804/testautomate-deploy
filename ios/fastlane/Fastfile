@@ -51,7 +51,7 @@ platform :ios do
     )
 
     import_certificate(
-      certificate_path: ENV["SIGNING_KEY_FILE_PATH"],
+      certificate_path: "#{Dir.pwd}/ios/signing-cert.p12",
       certificate_password: ENV["SIGNING_KEY_PASSWORD"],
       keychain_name: keychain_name,
       keychain_password: keychain_password
