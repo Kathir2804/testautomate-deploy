@@ -30,7 +30,7 @@ jobs:
       - name: Build & upload iOS binary
         run: |
           cd ios
-          # bundle update fastlane
+          bundle update fastlanec
           bundle install
           bundle exec fastlane ios build_upload_testflight
         env:
