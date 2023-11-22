@@ -31,7 +31,7 @@ jobs:
         run: |
           cd ios
           bundle update fastlane
-          # bundle install
+          bundle install
           bundle exec fastlane ios build_upload_testflight
         env:
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
